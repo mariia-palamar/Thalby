@@ -16,6 +16,25 @@ body {
     font-weight: 700;
 }
 
+.underline-hover {
+    position: relative;
+}
+
+.underline-hover::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -3px;
+    transition: 0.5s width;
+    background: #000;
+}
+
+.underline-hover:hover::after {
+    width: 100%;
+}
+
 /* header */
 
 .header .container {
@@ -37,23 +56,6 @@ body {
     color: #1c1b1b;
     font-weight: 700;
     line-height: 1.65;
-
-    position: relative
-}
-
-.header__nav-item::after {
-    content: '';
-    position: absolute;
-    background: #1c1b1b;
-    height: 2px;
-    width: 0;
-    left: 0;
-    bottom: -1px;
-    transition: 0.5s width;
-}
-
-.header__nav-item:hover::after {
-    width: 100%;
 }
 
 .header__nav-item:active {
@@ -219,21 +221,53 @@ body {
     position: relative;
 }
 
-.guide__item-btn::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background: #000;
-    bottom: -2px;
-    left: 0;
-    transition: 0.5s width;
-}
-
-.guide__item-btn:hover::after {
-    width: 100%;
-}
-
 .guide__item-btn:active {
     color: rgba(0, 0, 0, 0.85);
+}
+
+/* guide books */
+.guide-book__item {
+    padding: 76px 24px 51px;
+    background: rgba(204, 204, 204, 0.6);
+}
+
+.guide-book__item .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.guide-book__item--light {
+    background: rgba(204, 204, 204, 0.3);
+}
+
+.guide-book__img {
+    max-height: 525px;
+}
+
+.guide-book__description {
+    width: 50%;
+}
+
+.guide-book__title {
+    font-size: 36px;
+    margin-bottom: 31px;
+}
+
+.guide-book__text {
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+.guide-book__shop {
+    font-size: 17px;
+    font-weight: 700;
+    position: relative;
+}
+
+.guide-book__item--rev .container {
+    display: flex;
+    flex-direction: row-reverse;
+    text-align: right;
 }
