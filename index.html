@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <div class="container">
-        <header class="header">
-            <nav class="header__nav" aria-label="Main navigation">
+    <header class="header">
+        <div class="container">
+            <nav class="header__nav">
                 <ul class="header__nav-list">
                     <li class="header__nav-item"><a href="#" class="header__nav-link">Shop</a></li>
                     <li class="header__nav-item"><a href="#" class="header__nav-link">Collections</a></li>
@@ -22,14 +22,15 @@
             </nav>
 
             <div class="header-title-block">
-                <h1 class="header__title" aria-label="Title"><a href="#">
-                    <span></span>thalby
-                </a></h1>
+                <h1 class="header__title"><a href="#">
+                        <span></span>thalby
+                    </a></h1>
             </div>
 
-            <div class="header__actions" aria-label="Actions">
+            <div class="header__actions">
                 <ul class="header__actions-list">
-                    <li class="header__action-item"><a href="#">
+                    <li class="header__action-item">
+                        <a href="#">
                             <svg class="header__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -39,8 +40,8 @@
                                     d="M10 6C12.21 6 14 7.79 14 10C14 12.21 12.21 14 10 14C7.79 14 6 12.21 6 10C6 7.79 7.79 6 10 6Z"
                                     stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-
-                        </a></li>
+                        </a>
+                    </li>
                     <li class="header__action-item">
                         <svg class="header__icon" width="40" height="40" viewBox="0 0 40 40" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -63,8 +64,30 @@
                     </li>
                 </ul>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-section__left">
+                    <h2 class="hero-section__title title">Fall deeper in love <br> with <br> humanity.</h2>
+                    <p class="hero-section__description ">Get to know the world through our concise, informative and
+                        inspiring guides.</p>
+                    <a href="#" class="hero-section__link">Shop Now</a>
+                </div>
+                <div class="hero-section__right">
+                    <div class="hero-section__img-wrapper">
+                        <img src="./img/device-preview.png" alt="Device preview image" class="hero-section__img">
+                        <div class="hero-section__img-shadow"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        section.
+    </main>
+
 </body>
 
 </html>
