@@ -361,8 +361,8 @@ body {
     padding: 80px 28px;
 }
 
-.interviews__items .container{
-    min-height: 480px;
+.interviews__items .container {
+    min-height: 400px;
     position: relative;
 }
 
@@ -407,4 +407,65 @@ body {
     align-items: center;
     margin: 0 auto;
     font-weight: 700;
+}
+
+/* subscription */
+.subscription .container {
+    text-align: center;
+    padding: 75px 0 75px;
+}
+
+.subscription__title {
+    font-size: 36px;
+    margin-bottom: 9px;
+}
+
+.subscription__description {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.subscription__form {
+    max-width: 370px;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    margin: 0 auto;
+}
+
+.subscription__form input {
+    width: auto;
+    border: 1px solid #000;
+    outline: none;
+    padding: 10px 8px;
+}
+
+.subscription__input-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.subscription__form-name {
+    max-width: 153px;
+    grid-template: first-name;
+}
+
+.subscription__form-last-name {
+    max-width: 153px;
+    grid-template: last-name;
+}
+
+.subscription__form-email {
+    width: 366px;
+    grid-template: email;
+}
+
+.subscription__btn {
+    max-width: 115px;
+    color: white;
+    background: #000;
+    border-radius: 1rem;
+    padding: 8px 23px;
+    margin: 0 auto;
 }
