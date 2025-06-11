@@ -63,7 +63,7 @@ body {
 }
 
 .header__title {
-    font-family: 'Montserкat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: 28px;
 }
@@ -345,7 +345,7 @@ body {
 
 /* interviews */
 .interviews {
-    padding-top: 100;
+    padding-top: 100px;
 }
 
 .interviews__title {
@@ -448,17 +448,14 @@ body {
 
 .subscription__form-name {
     max-width: 153px;
-    grid-template: first-name;
 }
 
 .subscription__form-last-name {
     max-width: 153px;
-    grid-template: last-name;
 }
 
 .subscription__form-email {
     width: 366px;
-    grid-template: email;
 }
 
 .subscription__btn {
@@ -468,4 +465,92 @@ body {
     border-radius: 1rem;
     padding: 8px 23px;
     margin: 0 auto;
+}
+
+/* footer */
+.footer {
+    background: #020202;
+    color: #fff;
+    min-height: 320px;
+}
+
+.footer .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: translateY(50%);
+}
+
+.footer__top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.footer__title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+.footer__title span {
+    display: inline-flex;
+    width: 5px;
+    height: 5px;
+    background-color: #CCCC33;
+    border-radius: 50%;
+    transform: translateY(-11px);
+}
+
+.footer__socials-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer__socials-item {
+    line-height: 1.5;
+}
+
+.footer__links {
+    width: min(350px, 430px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer__links-title {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #fff;
+    margin-bottom: 36px;
+}
+
+.footer__list-item {
+    font-size: 14px;
+    line-height: 1.5;
+    transition: 0.3s color;
+}
+
+.footer__list-item:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer__list-item:active {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.footer__list-item+.footer__list-item {
+    margin-top: 12px;
+}
+
+.footer__bottom {
+    margin: 0 auto;
+}
+
+.footer__bottom p {
+    line-height: 1.65;
+    text-align: center;
 }
