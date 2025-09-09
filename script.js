@@ -49,3 +49,90 @@ guideBooks.forEach(book => {
 
     guideItemBtn.addEventListener('click', () => addToCart(book))
 })
+
+// cart
+const cartBtn = document.getElementById('cart')
+const cartAside = document.querySelector('.cart-aside')
+const closeCart = document.querySelector('.cart__close-btn')
+cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
+closeCart.addEventListener('click', () => cartAside.classList.remove('active'))
+
+
+let cart = new Map()
+
+function addToCart(book) {
+    if (cart.has(book.id)) {
+        const item = cart.get(book.id)
+        book.quantity++
+        cart.set(book.id, {...book, item})
+    } else {
+        cart.set(book.id, { ...book, quantity: 1 })
+    }
+    renderCart()
+}
+
+function renderCart() {
+    const cartList = document.querySelector('.cart__list')
+    cartList.innerHTML = ''
+
+    if (cart.size === 0) {
+        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        emptyCart.classList.remove('none')
+
+    } else if (cart.size !== 0) {
+        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        emptyCart.classList.add('none')
+    }
+
+
+    cart.forEach(item => {
+        const cartListItem = document.createElement('li')
+        const cartItemImg = document.createElement('img')
+        const cartItemTop = document.createElement('div')
+        const cartItemTitle = document.createElement('h5')
+        const cartItemDeleteBtn = document.createElement('button')
+        const cartItemBottom = document.createElement('div')
+        const cartItemQuantity = document.createElement('div')
+        const quantityBtnDecrease = document.createElement('button')
+        const quantityBtnDecreaseIcon = document.createElement('img')
+        const quantityInput = document.createElement('input')
+        const quantityBtnIncrease = document.createElement('button')
+        const quantityBtnIncreaseIcon = document.createElement('img')
+        const cartItemPrice = document.createElement('span')
+
+        cartItemImg.src = item.image
+        cartItemImg.alt = item.title
+        cartItemTitle.textContent = item.title
+        cartItemDeleteBtn.src = './icons/delete-item-icon.svg'
+        cartItemDeleteBtn.alt = 'Delete icon'
+        quantityBtnDecrease.type = 'button'
+        quantityBtnDecreaseIcon.src = './icons/decrease-icon.svg'
+        quantityBtnDecreaseIcon.alt = 'Decrease icon'
+        quantityInput.min = 1
+        quantityBtnIncreaseIcon.src = './icons/increase-icon.svg'
+        quantityBtnIncreaseIcon.alt = 'Increase icon'
+        quantityInput.type = 'number'
+        quantityInput.value = parseInt(item.quantity)
+        cartItemPrice.textContent = `${(item.quantity * item.price).toFixed(2)}`
+
+        cartListItem.classList.add('cart__list-item')
+        cartItemImg.classList.add('cart__item-img')
+        cartItemTop.classList.add('cart__item-top')
+        cartItemTitle.classList.add('cart__item-title')
+        cartItemDeleteBtn.classList.add('cart__item-delete-btn')
+        cartItemBottom.classList.add('cart__item-bottom')
+        cartItemQuantity.classList.add('cart__item-quantity')
+        quantityBtnDecrease.classList.add('quantity-btn', 'quantity-btn--decrease')
+        quantityInput.classList.add('quantity-input')
+        quantityBtnIncrease.classList.add('quantity-btn', 'quantity-btn--increase')
+        cartItemPrice.classList.add('cart__item-price')
+
+        cartItemTop.append(cartItemTitle, cartItemDeleteBtn)
+        quantityBtnDecrease.appendChild(quantityBtnDecreaseIcon)
+        quantityBtnIncrease.appendChild(quantityBtnIncreaseIcon)
+        cartItemQuantity.append(quantityBtnDecrease, quantityInput, quantityBtnIncrease)
+        cartItemBottom.append(cartItemQuantity, cartItemPrice)
+        cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
+        cartList.appendChild(cartListItem)
+    })
+}
