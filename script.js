@@ -63,8 +63,7 @@ let cart = new Map()
 function addToCart(book) {
     if (cart.has(book.id)) {
         const item = cart.get(book.id)
-        book.quantity++
-        cart.set(book.id, {...book, item})
+        cart.set(book.id, { ...item, quantity: item.quantity + 1 })
     } else {
         cart.set(book.id, { ...book, quantity: 1 })
     }
@@ -113,7 +112,7 @@ function renderCart() {
         quantityBtnIncreaseIcon.alt = 'Increase icon'
         quantityInput.type = 'number'
         quantityInput.value = parseInt(item.quantity)
-        cartItemPrice.textContent = `${(item.quantity * item.price).toFixed(2)}`
+        cartItemPrice.textContent = `${parseFloat((item.quantity * item.price).toFixed(2))}`
 
         cartListItem.classList.add('cart__list-item')
         cartItemImg.classList.add('cart__item-img')
@@ -134,5 +133,25 @@ function renderCart() {
         cartItemBottom.append(cartItemQuantity, cartItemPrice)
         cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
         cartList.appendChild(cartListItem)
+
+        quantityInput.addEventListener('input', event => {
+            let value = event.target.value
+            if (value === '') {
+                event.target.value
+                cart.set(item.id, { ...item, quantity: 1 })
+                cartItemPrice.textContent = `${parseFloat(item.quantity * item.price)}`
+                return
+            }
+
+            let updatedQuantity = parseInt(event.target.value)
+
+            if (isNaN(updatedQuantity) || updatedQuantity < 1) {
+                updatedQuantity = 1
+                event.target.value = 1
+            }
+
+            cart.set(item.id, { ...item, quantity: parseInt(updatedQuantity) })
+            cartItemPrice.textContent = `${parseFloat((updatedQuantity * item.price).toFixed(2))}`
+        })
     })
 }
