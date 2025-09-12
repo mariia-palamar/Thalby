@@ -112,7 +112,7 @@ function renderCart() {
         quantityBtnIncreaseIcon.alt = 'Increase icon'
         quantityInput.type = 'number'
         quantityInput.value = parseInt(item.quantity)
-        cartItemPrice.textContent = `${parseFloat((item.quantity * item.price).toFixed(2))}`
+        cartItemPrice.textContent = `${parseFloat((item.quantity * item.price).toFixed(2))}$`
 
         cartListItem.classList.add('cart__list-item')
         cartItemImg.classList.add('cart__item-img')
@@ -139,7 +139,7 @@ function renderCart() {
             if (value === '') {
                 event.target.value
                 cart.set(item.id, { ...item, quantity: 1 })
-                cartItemPrice.textContent = `${parseFloat(item.quantity * item.price)}`
+                cartItemPrice.textContent = `${parseFloat(item.quantity * item.price)}$`
                 return
             }
 
@@ -151,7 +151,7 @@ function renderCart() {
             }
 
             cart.set(item.id, { ...item, quantity: parseInt(updatedQuantity) })
-            cartItemPrice.textContent = `${parseFloat((updatedQuantity * item.price).toFixed(2))}`
+            cartItemPrice.textContent = `${parseFloat((updatedQuantity * item.price).toFixed(2))}$`
         })
     })
 }
