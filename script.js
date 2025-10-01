@@ -105,7 +105,7 @@ function renderCart() {
         cartItemDeleteBtn.src = './icons/delete-item-icon.svg'
         cartItemDeleteBtn.alt = 'Delete icon'
         quantityBtnDecrease.type = 'button'
-        quantityBtnDecreaseIcon.src = './icons/decrease-icon.svg'
+        quantityBtnDecreaseIcon.src = item.quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
         quantityBtnDecreaseIcon.alt = 'Decrease icon'
         quantityInput.min = 1
         quantityBtnIncreaseIcon.src = './icons/increase-icon.svg'
@@ -134,24 +134,21 @@ function renderCart() {
         cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
         cartList.appendChild(cartListItem)
 
-        quantityInput.addEventListener('input', event => {
-            let value = event.target.value
-            if (value === '') {
-                event.target.value
-                cart.set(item.id, { ...item, quantity: 1 })
-                cartItemPrice.textContent = `${parseFloat(item.quantity * item.price)}$`
-                return
+        function updateItem(quantity) {
+            if (isNaN(quantity) || quantity < 1) quantity = 1
+            cart.set(item.id, { ...item, quantity })
+            quantityInput.value = quantity
+            cartItemPrice.textContent = `${parseFloat((quantity * item.price).toFixed(2))}$`
+            quantityBtnDecreaseIcon.src = quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
+        }
+
+        quantityInput.addEventListener('input', () => updateItem(parseInt(quantityInput.value)))
+        quantityInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                quantityInput.blur()
+                updateItem(parseInt(quantityInput.value))
             }
-
-            let updatedQuantity = parseInt(event.target.value)
-
-            if (isNaN(updatedQuantity) || updatedQuantity < 1) {
-                updatedQuantity = 1
-                event.target.value = 1
-            }
-
-            cart.set(item.id, { ...item, quantity: parseInt(updatedQuantity) })
-            cartItemPrice.textContent = `${parseFloat((updatedQuantity * item.price).toFixed(2))}$`
         })
     })
 }
