@@ -74,16 +74,6 @@ function renderCart() {
     const cartList = document.querySelector('.cart__list')
     cartList.innerHTML = ''
 
-    if (cart.size === 0) {
-        const emptyCart = document.querySelector('.cart-aside__is-empty')
-        emptyCart.classList.remove('none')
-
-    } else if (cart.size !== 0) {
-        const emptyCart = document.querySelector('.cart-aside__is-empty')
-        emptyCart.classList.add('none')
-    }
-
-
     cart.forEach(item => {
         const cartListItem = document.createElement('li')
         const cartItemImg = document.createElement('img')
@@ -142,6 +132,9 @@ function renderCart() {
             quantityBtnDecreaseIcon.src = quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
         }
 
+        quantityBtnDecrease.addEventListener('click', () => updateItem(parseInt(quantityInput.value) - 1))
+        quantityBtnIncrease.addEventListener('click', () => updateItem(parseInt(quantityInput.value) + 1))
+
         quantityInput.addEventListener('input', () => updateItem(parseInt(quantityInput.value)))
         quantityInput.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
@@ -150,5 +143,23 @@ function renderCart() {
                 updateItem(parseInt(quantityInput.value))
             }
         })
+
+        cartItemDeleteBtn.addEventListener('click', () => {
+            cart.delete(item.id)
+            cartListItem.remove()
+            isCartEmpty()
+        })
+        isCartEmpty()
     })
+}
+
+function isCartEmpty() {
+    if (cart.size === 0) {
+        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        emptyCart.classList.remove('none')
+
+    } else if (cart.size !== 0) {
+        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        emptyCart.classList.add('none')
+    }
 }
