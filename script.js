@@ -57,7 +57,6 @@ const closeCart = document.querySelector('.cart__close-btn')
 cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
 closeCart.addEventListener('click', () => cartAside.classList.remove('active'))
 
-
 let cart = new Map()
 
 function addToCart(book) {
@@ -102,7 +101,7 @@ function renderCart() {
         quantityBtnIncreaseIcon.alt = 'Increase icon'
         quantityInput.type = 'number'
         quantityInput.value = parseInt(item.quantity)
-        cartItemPrice.textContent = `${parseFloat((item.quantity * item.price).toFixed(2))}$`
+        cartItemPrice.textContent = `$${parseFloat((item.quantity * item.price).toFixed(2))}`
 
         cartListItem.classList.add('cart__list-item')
         cartItemImg.classList.add('cart__item-img')
@@ -128,38 +127,78 @@ function renderCart() {
             if (isNaN(quantity) || quantity < 1) quantity = 1
             cart.set(item.id, { ...item, quantity })
             quantityInput.value = quantity
-            cartItemPrice.textContent = `${parseFloat((quantity * item.price).toFixed(2))}$`
+            cartItemPrice.textContent = `$${parseFloat((quantity * item.price).toFixed(2))}`
             quantityBtnDecreaseIcon.src = quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
         }
 
-        quantityBtnDecrease.addEventListener('click', () => updateItem(parseInt(quantityInput.value) - 1))
-        quantityBtnIncrease.addEventListener('click', () => updateItem(parseInt(quantityInput.value) + 1))
+        quantityBtnDecrease.addEventListener('click', () => {
+            updateItem(parseInt(quantityInput.value) - 1)
+            updatedTotal()
+        })
+        quantityBtnIncrease.addEventListener('click', () => {
+            updateItem(parseInt(quantityInput.value) + 1)
+            updatedTotal()
+        })
 
-        quantityInput.addEventListener('input', () => updateItem(parseInt(quantityInput.value)))
+        quantityInput.addEventListener('input', () => {
+            updateItem(parseInt(quantityInput.value))
+            updatedTotal()
+        })
         quantityInput.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault()
                 quantityInput.blur()
                 updateItem(parseInt(quantityInput.value))
+                updatedTotal()
+
             }
         })
 
         cartItemDeleteBtn.addEventListener('click', () => {
+            updatedTotal()
             cart.delete(item.id)
             cartListItem.remove()
             isCartEmpty()
         })
         isCartEmpty()
     })
+
+    const oldCartBottom = document.querySelector('.cart__bottom')
+    if(oldCartBottom) {oldCartBottom.remove()}
+
+    const cartBottom = document.createElement('form')
+    cartBottom.classList.add('cart__bottom')
+    cartBottom.innerHTML = `<p class="cart__bottom-total"><strong>Total</strong> <span class="total-sum">$${totalSum(cart).toFixed(2)}</span></p>
+            <div class="cart__bottom-agreement">
+                <input type="checkbox" id="privacy-policy">
+                <label for="privacy-policy">I agree to the <a href="./privacy-policy-terms.html" class="underline-hover">Terms</a> and <a href="./privacy-policy-terms.html" class="underline-hover">Privacy Policy</a>.</label>
+            </div>
+            <button type="submit" class="cart__bottom-btn">Buy Now</button>`
+    
+    cartList.insertAdjacentElement('afterend', cartBottom)
 }
 
 function isCartEmpty() {
     if (cart.size === 0) {
         const emptyCart = document.querySelector('.cart-aside__is-empty')
         emptyCart.classList.remove('none')
-
     } else if (cart.size !== 0) {
         const emptyCart = document.querySelector('.cart-aside__is-empty')
         emptyCart.classList.add('none')
+    }
+}
+
+function totalSum(cart) {
+    let total = 0
+    cart.forEach(item => {
+        total += item.quantity * item.price
+    })
+    return total
+}
+
+function updatedTotal() {
+    const totalElement = document.querySelector('.total-sum')
+    if (totalElement) {
+        totalElement.textContent = `$${totalSum(cart).toFixed(2)}`
     }
 }

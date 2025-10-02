@@ -4,7 +4,6 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
     padding-top: 70px;
-    
 }
 
 /* common */
@@ -582,7 +581,7 @@ body {
     height: 100vh;
     background: #FBFBFB;
     position: fixed;
-    top: 0; 
+    top: 0;
     right: 0;
     transform: translateX(100%);
     transition: transform 0.4s ease;
@@ -615,7 +614,7 @@ body {
         "image bottom";
 }
 
-.cart__list-item + .cart__list-item {
+.cart__list-item+.cart__list-item {
     margin-top: 30px;
     border-top: 1px solid #D9D9D9;
     padding-top: 30px;
@@ -700,4 +699,60 @@ body {
 
 .none {
     display: none;
+}
+
+.cart__bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: calc(100% - 20px);
+}
+
+.cart__bottom-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.cart__bottom-total strong {
+    font-size: 22px;
+}
+
+.total-sum {
+    font-size: 18px;
+}
+
+.cart__bottom-agreement {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.cart__bottom-btn {
+    font-size: 18px;
+    padding: 5px 5%;
+    width: 80%;
+    max-width: 300px;
+    background: #048600;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    display: block;
+    margin: 0 auto;
+}
+
+.cart__bottom a {
+    color: #202020;
+}
+
+/* Privacy Policy and Terms */
+
+.terms {
+    margin-bottom: 20px;
+}
+
+.terms__title,
+.privacy__title {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
