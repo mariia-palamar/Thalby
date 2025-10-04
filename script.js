@@ -71,6 +71,8 @@ function addToCart(book) {
 
 function renderCart() {
     const cartList = document.querySelector('.cart__list')
+    const orderAccepted = document.querySelector('.cart-aside__order-accepted')
+    if(orderAccepted) {orderAccepted.classList.add('none')}
     cartList.innerHTML = ''
 
     cart.forEach(item => {
@@ -150,7 +152,6 @@ function renderCart() {
                 quantityInput.blur()
                 updateItem(parseInt(quantityInput.value))
                 updatedTotal()
-
             }
         })
 
@@ -164,7 +165,7 @@ function renderCart() {
     })
 
     const oldCartBottom = document.querySelector('.cart__bottom')
-    if(oldCartBottom) {oldCartBottom.remove()}
+    if (oldCartBottom) { oldCartBottom.remove() }
 
     const cartBottom = document.createElement('form')
     cartBottom.classList.add('cart__bottom')
@@ -173,9 +174,23 @@ function renderCart() {
                 <input type="checkbox" id="privacy-policy">
                 <label for="privacy-policy">I agree to the <a href="./privacy-policy-terms.html" class="underline-hover">Terms</a> and <a href="./privacy-policy-terms.html" class="underline-hover">Privacy Policy</a>.</label>
             </div>
-            <button type="submit" class="cart__bottom-btn">Buy Now</button>`
-    
+            <button type="button" class="cart__bottom-btn">Buy Now</button>`
+
     cartList.insertAdjacentElement('afterend', cartBottom)
+
+    const checkbox = document.querySelector('#privacy-policy')
+    const bottomBtn = document.querySelector('.cart__bottom-btn')
+
+    isChecked(bottomBtn, checkbox)
+
+    bottomBtn.addEventListener('click', () => {
+        cartList.innerHTML = ''
+        cart.clear()
+        orderAccepted.classList.remove('none')
+        cartBottom.classList.add('none')
+    })
+
+    checkbox.addEventListener('change', () => isChecked(bottomBtn, checkbox))
 }
 
 function isCartEmpty() {
@@ -201,4 +216,8 @@ function updatedTotal() {
     if (totalElement) {
         totalElement.textContent = `$${totalSum(cart).toFixed(2)}`
     }
+}
+
+function isChecked(bottomBtn, checkbox) {
+    bottomBtn.disabled = !checkbox.checked
 }

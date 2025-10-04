@@ -688,11 +688,11 @@ body {
     font-size: 18px;
 }
 
-.cart-aside__is-empty {
+.cart-aside__is-empty, .cart-aside__order-accepted {
     text-align: center;
 }
 
-.cart-aside__is-empty p {
+.cart-aside__is-empty p, .cart-aside__order-accepted p {
     font-size: 23px;
     color: #A7A7A7;
 }
@@ -744,6 +744,14 @@ body {
 .cart__bottom a {
     color: #202020;
 }
+
+.cart__bottom-btn:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 
 /* Privacy Policy and Terms */
 
