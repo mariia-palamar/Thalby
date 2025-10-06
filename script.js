@@ -67,12 +67,13 @@ function addToCart(book) {
         cart.set(book.id, { ...book, quantity: 1 })
     }
     renderCart()
+    itemQuantity()
 }
 
 function renderCart() {
     const cartList = document.querySelector('.cart__list')
     const orderAccepted = document.querySelector('.cart-aside__order-accepted')
-    if(orderAccepted) {orderAccepted.classList.add('none')}
+    if (orderAccepted) { orderAccepted.classList.add('none') }
     cartList.innerHTML = ''
 
     cart.forEach(item => {
@@ -136,10 +137,12 @@ function renderCart() {
         quantityBtnDecrease.addEventListener('click', () => {
             updateItem(parseInt(quantityInput.value) - 1)
             updatedTotal()
+            itemQuantity()
         })
         quantityBtnIncrease.addEventListener('click', () => {
             updateItem(parseInt(quantityInput.value) + 1)
             updatedTotal()
+            itemQuantity()
         })
 
         quantityInput.addEventListener('input', () => {
@@ -157,6 +160,7 @@ function renderCart() {
 
         cartItemDeleteBtn.addEventListener('click', () => {
             updatedTotal()
+            itemQuantity()
             cart.delete(item.id)
             cartListItem.remove()
             isCartEmpty()
@@ -220,4 +224,16 @@ function updatedTotal() {
 
 function isChecked(bottomBtn, checkbox) {
     bottomBtn.disabled = !checkbox.checked
+}
+
+function itemQuantity() {
+    const quantityContainer = document.querySelector('.quantity')
+    let total = 0
+    if (total === 0) { }
+    cart.forEach(item => {
+        total += item.quantity
+        console.log(total);
+
+    })
+    total === 0 ? quantityContainer.textContent = '' : quantityContainer.textContent = parseInt(total)
 }
