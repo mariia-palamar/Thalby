@@ -688,11 +688,13 @@ body {
     font-size: 18px;
 }
 
-.cart-aside__is-empty, .cart-aside__order-accepted {
+.cart-aside__is-empt
+.cart-aside__order-accepted {
     text-align: center;
 }
 
-.cart-aside__is-empty p, .cart-aside__order-accepted p {
+.cart-aside__is-empty p,
+.cart-aside__order-accepted p {
     font-size: 23px;
     color: #A7A7A7;
 }
