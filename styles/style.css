@@ -688,7 +688,7 @@ body {
     font-size: 18px;
 }
 
-.cart-aside__is-empt
+.cart-aside__is-empty,
 .cart-aside__order-accepted {
     text-align: center;
 }
