@@ -58,6 +58,7 @@ cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
 closeCart.addEventListener('click', () => cartAside.classList.remove('active'))
 
 let cart = new Map()
+loadFromLocalStorage()
 
 function addToCart(book) {
     if (cart.has(book.id)) {
@@ -68,6 +69,7 @@ function addToCart(book) {
     }
     renderCart()
     itemQuantity()
+    saveToLocalStorage(cart)
 }
 
 function renderCart() {
@@ -138,16 +140,19 @@ function renderCart() {
             updateItem(parseInt(quantityInput.value) - 1)
             updatedTotal()
             itemQuantity()
+            saveToLocalStorage(cart)
         })
         quantityBtnIncrease.addEventListener('click', () => {
             updateItem(parseInt(quantityInput.value) + 1)
             updatedTotal()
             itemQuantity()
+            saveToLocalStorage(cart)
         })
 
         quantityInput.addEventListener('input', () => {
             updateItem(parseInt(quantityInput.value))
             updatedTotal()
+            saveToLocalStorage(cart)
         })
         quantityInput.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
@@ -155,6 +160,7 @@ function renderCart() {
                 quantityInput.blur()
                 updateItem(parseInt(quantityInput.value))
                 updatedTotal()
+                saveToLocalStorage(cart)
             }
         })
 
@@ -164,6 +170,7 @@ function renderCart() {
             cart.delete(item.id)
             cartListItem.remove()
             isCartEmpty()
+            saveToLocalStorage(cart)
         })
         isCartEmpty()
     })
@@ -189,7 +196,9 @@ function renderCart() {
 
     bottomBtn.addEventListener('click', () => {
         cartList.innerHTML = ''
+        clearLocalStorage()
         cart.clear()
+        itemQuantity()
         orderAccepted.classList.remove('none')
         cartBottom.classList.add('none')
     })
@@ -229,11 +238,33 @@ function isChecked(bottomBtn, checkbox) {
 function itemQuantity() {
     const quantityContainer = document.querySelector('.quantity')
     let total = 0
-    if (total === 0) { }
-    cart.forEach(item => {
-        total += item.quantity
-        console.log(total);
-
-    })
+    if (total === 0) {
+        cart.forEach(item => {
+            total += item.quantity
+        })
+    }
     total === 0 ? quantityContainer.textContent = '' : quantityContainer.textContent = parseInt(total)
+}
+
+function saveToLocalStorage(cart) {
+    const cartModified = Object.fromEntries(cart)
+    localStorage.setItem('data', JSON.stringify(cartModified))
+}
+
+function loadFromLocalStorage() {
+    const data = localStorage.getItem('data')
+    if (!data) return
+
+    if (data) {
+        const modifiedData = JSON.parse(data)
+        for (const id in modifiedData) {
+            cart.set(id, modifiedData[id])
+        }
+        renderCart()
+        itemQuantity()
+    }
+}
+
+function clearLocalStorage() {
+    localStorage.removeItem('data')
 }
