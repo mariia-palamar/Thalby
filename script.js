@@ -165,12 +165,12 @@ function renderCart() {
         })
 
         cartItemDeleteBtn.addEventListener('click', () => {
-            updatedTotal()
-            itemQuantity()
             cart.delete(item.id)
             cartListItem.remove()
-            isCartEmpty()
+            updatedTotal()
+            itemQuantity()
             saveToLocalStorage(cart)
+            isCartEmpty()
         })
         isCartEmpty()
     })
@@ -188,6 +188,8 @@ function renderCart() {
             <button type="button" class="cart__bottom-btn">Buy Now</button>`
 
     cartList.insertAdjacentElement('afterend', cartBottom)
+
+    isCartEmpty()
 
     const checkbox = document.querySelector('#privacy-policy')
     const bottomBtn = document.querySelector('.cart__bottom-btn')
@@ -210,6 +212,9 @@ function isCartEmpty() {
     if (cart.size === 0) {
         const emptyCart = document.querySelector('.cart-aside__is-empty')
         emptyCart.classList.remove('none')
+        document.querySelector('.cart__bottom').classList.add('none')
+        updatedTotal()
+        clearLocalStorage()
     } else if (cart.size !== 0) {
         const emptyCart = document.querySelector('.cart-aside__is-empty')
         emptyCart.classList.add('none')
