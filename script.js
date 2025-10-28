@@ -54,6 +54,11 @@ guideBooks.forEach(book => {
 const cartBtn = document.getElementById('cart')
 const cartAside = document.querySelector('.cart-aside')
 const closeCart = document.querySelector('.cart__close-btn')
+
+window.addEventListener('load', () => {
+    cartAside.classList.add('transition-ready')
+})
+
 cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
 closeCart.addEventListener('click', () => cartAside.classList.remove('active'))
 
@@ -61,11 +66,12 @@ let cart = new Map()
 loadFromLocalStorage()
 
 function addToCart(book) {
-    if (cart.has(book.id)) {
-        const item = cart.get(book.id)
-        cart.set(book.id, { ...item, quantity: item.quantity + 1 })
+    const id = String(book.id)
+    if (cart.has(id)) {
+        const item = cart.get(id)
+        cart.set(id, { ...item, quantity: item.quantity + 1 })
     } else {
-        cart.set(book.id, { ...book, quantity: 1 })
+        cart.set(id, { ...book, quantity: 1 })
     }
     renderCart()
     itemQuantity()
@@ -75,109 +81,128 @@ function addToCart(book) {
 function renderCart() {
     const cartList = document.querySelector('.cart__list')
     const orderAccepted = document.querySelector('.cart-aside__order-accepted')
+
     if (orderAccepted) { orderAccepted.classList.add('none') }
+
     cartList.innerHTML = ''
 
     cart.forEach(item => {
-        const cartListItem = document.createElement('li')
-        const cartItemImg = document.createElement('img')
-        const cartItemTop = document.createElement('div')
-        const cartItemTitle = document.createElement('h5')
-        const cartItemDeleteBtn = document.createElement('button')
-        const cartItemBottom = document.createElement('div')
-        const cartItemQuantity = document.createElement('div')
-        const quantityBtnDecrease = document.createElement('button')
-        const quantityBtnDecreaseIcon = document.createElement('img')
-        const quantityInput = document.createElement('input')
-        const quantityBtnIncrease = document.createElement('button')
-        const quantityBtnIncreaseIcon = document.createElement('img')
-        const cartItemPrice = document.createElement('span')
-
-        cartItemImg.src = item.image
-        cartItemImg.alt = item.title
-        cartItemTitle.textContent = item.title
-        cartItemDeleteBtn.src = './icons/delete-item-icon.svg'
-        cartItemDeleteBtn.alt = 'Delete icon'
-        quantityBtnDecrease.type = 'button'
-        quantityBtnDecreaseIcon.src = item.quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
-        quantityBtnDecreaseIcon.alt = 'Decrease icon'
-        quantityInput.min = 1
-        quantityBtnIncreaseIcon.src = './icons/increase-icon.svg'
-        quantityBtnIncreaseIcon.alt = 'Increase icon'
-        quantityInput.type = 'number'
-        quantityInput.value = parseInt(item.quantity)
-        cartItemPrice.textContent = `$${parseFloat((item.quantity * item.price).toFixed(2))}`
-
-        cartListItem.classList.add('cart__list-item')
-        cartItemImg.classList.add('cart__item-img')
-        cartItemTop.classList.add('cart__item-top')
-        cartItemTitle.classList.add('cart__item-title')
-        cartItemDeleteBtn.classList.add('cart__item-delete-btn')
-        cartItemBottom.classList.add('cart__item-bottom')
-        cartItemQuantity.classList.add('cart__item-quantity')
-        quantityBtnDecrease.classList.add('quantity-btn', 'quantity-btn--decrease')
-        quantityInput.classList.add('quantity-input')
-        quantityBtnIncrease.classList.add('quantity-btn', 'quantity-btn--increase')
-        cartItemPrice.classList.add('cart__item-price')
-
-        cartItemTop.append(cartItemTitle, cartItemDeleteBtn)
-        quantityBtnDecrease.appendChild(quantityBtnDecreaseIcon)
-        quantityBtnIncrease.appendChild(quantityBtnIncreaseIcon)
-        cartItemQuantity.append(quantityBtnDecrease, quantityInput, quantityBtnIncrease)
-        cartItemBottom.append(cartItemQuantity, cartItemPrice)
-        cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
-        cartList.appendChild(cartListItem)
-
-        function updateItem(quantity) {
-            if (isNaN(quantity) || quantity < 1) quantity = 1
-            cart.set(item.id, { ...item, quantity })
-            quantityInput.value = quantity
-            cartItemPrice.textContent = `$${parseFloat((quantity * item.price).toFixed(2))}`
-            quantityBtnDecreaseIcon.src = quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
-        }
-
-        quantityBtnDecrease.addEventListener('click', () => {
-            updateItem(parseInt(quantityInput.value) - 1)
-            updatedTotal()
-            itemQuantity()
-            saveToLocalStorage(cart)
-        })
-        quantityBtnIncrease.addEventListener('click', () => {
-            updateItem(parseInt(quantityInput.value) + 1)
-            updatedTotal()
-            itemQuantity()
-            saveToLocalStorage(cart)
-        })
-
-        quantityInput.addEventListener('input', () => {
-            updateItem(parseInt(quantityInput.value))
-            updatedTotal()
-            saveToLocalStorage(cart)
-        })
-        quantityInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                e.preventDefault()
-                quantityInput.blur()
-                updateItem(parseInt(quantityInput.value))
-                updatedTotal()
-                saveToLocalStorage(cart)
-            }
-        })
-
-        cartItemDeleteBtn.addEventListener('click', () => {
-            cart.delete(item.id)
-            cartListItem.remove()
-            updatedTotal()
-            itemQuantity()
-            saveToLocalStorage(cart)
-            isCartEmpty()
-        })
+        createCartItem(item, cartList)
         isCartEmpty()
     })
 
     const oldCartBottom = document.querySelector('.cart__bottom')
     if (oldCartBottom) { oldCartBottom.remove() }
+    renderCartBottom(cartList, orderAccepted)
+}
 
+function createCartItem(item, cartList) {
+    const cartListItem = document.createElement('li')
+    const cartItemImg = document.createElement('img')
+    const cartItemTop = document.createElement('div')
+    const cartItemTitle = document.createElement('h5')
+    const cartItemDeleteBtn = document.createElement('button')
+    const cartItemBottom = document.createElement('div')
+    const cartItemQuantity = document.createElement('div')
+    const quantityBtnDecrease = document.createElement('button')
+    const quantityBtnDecreaseIcon = document.createElement('img')
+    const quantityInput = document.createElement('input')
+    const quantityBtnIncrease = document.createElement('button')
+    const quantityBtnIncreaseIcon = document.createElement('img')
+    const cartItemPrice = document.createElement('span')
+
+    cartListItem.dataset.id = item.id
+    cartItemImg.src = item.image
+    cartItemImg.alt = item.title
+    cartItemTitle.textContent = item.title
+    cartItemDeleteBtn.src = './icons/delete-item-icon.svg'
+    cartItemDeleteBtn.alt = 'Delete icon'
+    quantityBtnDecrease.type = 'button'
+    quantityBtnDecreaseIcon.src = item.quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
+    quantityBtnDecreaseIcon.alt = 'Decrease icon'
+    quantityInput.min = 1
+    quantityBtnIncreaseIcon.src = './icons/increase-icon.svg'
+    quantityBtnIncreaseIcon.alt = 'Increase icon'
+    quantityInput.type = 'number'
+    quantityInput.value = parseInt(item.quantity)
+    cartItemPrice.textContent = `$${parseFloat((item.quantity * item.price).toFixed(2))}`
+
+    cartListItem.classList.add('cart__list-item')
+    cartItemImg.classList.add('cart__item-img')
+    cartItemTop.classList.add('cart__item-top')
+    cartItemTitle.classList.add('cart__item-title')
+    cartItemDeleteBtn.classList.add('cart__item-delete-btn')
+    cartItemBottom.classList.add('cart__item-bottom')
+    cartItemQuantity.classList.add('cart__item-quantity')
+    quantityBtnDecrease.classList.add('quantity-btn', 'quantity-btn--decrease')
+    quantityInput.classList.add('quantity-input')
+    quantityBtnIncrease.classList.add('quantity-btn', 'quantity-btn--increase')
+    cartItemPrice.classList.add('cart__item-price')
+
+    cartItemTop.append(cartItemTitle, cartItemDeleteBtn)
+    quantityBtnDecrease.appendChild(quantityBtnDecreaseIcon)
+    quantityBtnIncrease.appendChild(quantityBtnIncreaseIcon)
+    cartItemQuantity.append(quantityBtnDecrease, quantityInput, quantityBtnIncrease)
+    cartItemBottom.append(cartItemQuantity, cartItemPrice)
+    cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
+    cartList.appendChild(cartListItem)
+
+    quantityBtnDecrease.addEventListener('click', () => decreaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
+    quantityBtnIncrease.addEventListener('click', () => increaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
+    cartItemDeleteBtn.addEventListener('click', () => deleteItem(item, cartListItem))
+    quantityInput.addEventListener('keydown', (e) => handleEnter(e, item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
+    quantityInput.addEventListener('input', () => changedInput(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
+}
+
+function updateItem(quantity, item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon) {
+    const id = String(item.id)
+    if (isNaN(quantity) || quantity < 1) quantity = 1
+    cart.set(id, { ...item, quantity })
+    quantityInput.value = quantity
+    cartItemPrice.textContent = `$${parseFloat((quantity * item.price).toFixed(2))}`
+    quantityBtnDecreaseIcon.src = quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
+    saveToLocalStorage(cart)
+}
+
+function decreaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon) {
+    updateItem(parseInt(quantityInput.value) - 1, item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon)
+    updatedTotal()
+    itemQuantity()
+}
+
+function increaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon) {
+    updateItem(parseInt(quantityInput.value) + 1, item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon)
+    updatedTotal()
+    itemQuantity()
+}
+
+function changedInput(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon) {
+    updateItem(parseInt(quantityInput.value), item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon)
+    updatedTotal()
+}
+
+function handleEnter(e, item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon) {
+    if (e.key === 'Enter') {
+        e.preventDefault()
+        quantityInput.blur()
+        updateItem(parseInt(quantityInput.value), item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon)
+        itemQuantity()
+        updatedTotal()
+        saveToLocalStorage(cart)
+    }
+}
+
+function deleteItem(item, cartListItem) {
+    const id = String(item.id)
+    cart.delete(id)
+    cartListItem.remove()
+    itemQuantity()
+    updatedTotal()
+    saveToLocalStorage(cart)
+    isCartEmpty()
+}
+
+function renderCartBottom(cartList, orderAccepted) {
     const cartBottom = document.createElement('form')
     cartBottom.classList.add('cart__bottom')
     cartBottom.innerHTML = `<p class="cart__bottom-total"><strong>Total</strong> <span class="total-sum">$${totalSum(cart).toFixed(2)}</span></p>
@@ -191,8 +216,8 @@ function renderCart() {
 
     isCartEmpty()
 
-    const checkbox = document.querySelector('#privacy-policy')
-    const bottomBtn = document.querySelector('.cart__bottom-btn')
+    const checkbox = cartBottom.querySelector('#privacy-policy')
+    const bottomBtn = cartBottom.querySelector('.cart__bottom-btn')
 
     isChecked(bottomBtn, checkbox)
 
@@ -210,30 +235,26 @@ function renderCart() {
 
 function isCartEmpty() {
     if (cart.size === 0) {
-        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        const emptyCart = document.querySelector('.cart-aside__empty')
         emptyCart.classList.remove('none')
         document.querySelector('.cart__bottom').classList.add('none')
         updatedTotal()
         clearLocalStorage()
     } else if (cart.size !== 0) {
-        const emptyCart = document.querySelector('.cart-aside__is-empty')
+        const emptyCart = document.querySelector('.cart-aside__empty')
         emptyCart.classList.add('none')
     }
 }
 
 function totalSum(cart) {
     let total = 0
-    cart.forEach(item => {
-        total += item.quantity * item.price
-    })
+    cart.forEach(item => total += item.quantity * item.price)
     return total
 }
 
 function updatedTotal() {
     const totalElement = document.querySelector('.total-sum')
-    if (totalElement) {
-        totalElement.textContent = `$${totalSum(cart).toFixed(2)}`
-    }
+    if (totalElement) totalElement.textContent = `$${totalSum(cart).toFixed(2)}`
 }
 
 function isChecked(bottomBtn, checkbox) {
@@ -243,11 +264,7 @@ function isChecked(bottomBtn, checkbox) {
 function itemQuantity() {
     const quantityContainer = document.querySelector('.quantity')
     let total = 0
-    if (total === 0) {
-        cart.forEach(item => {
-            total += item.quantity
-        })
-    }
+    cart.forEach(item => total += item.quantity)
     total === 0 ? quantityContainer.textContent = '' : quantityContainer.textContent = parseInt(total)
 }
 

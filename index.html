@@ -14,37 +14,44 @@
         <div class="container">
             <nav class="header__nav">
                 <ul class="header__nav-list">
-                    <li class="header__nav-item underline-hover"><a href="#hero-section"
-                            class="header__nav-link">Shop</a></li>
-                    <li class="header__nav-item underline-hover"><a href="#guide__description"
-                            class="header__nav-link">Collections</a>
+                    <li class="header__nav-item underline-hover">
+                        <a href="#hero-section" class="header__nav-link">Shop</a>
                     </li>
-                    <li class="header__nav-item underline-hover"><a href="#guide-books" class="header__nav-link">Try a
-                            Free
-                            Guide</a></li>
-                    <li class="header__nav-item underline-hover"><a href="#interviews"
-                            class="header__nav-link">Stories</a></li>
+                    <li class="header__nav-item underline-hover">
+                        <a href="#guide__description" class="header__nav-link">Collections</a>
+                    </li>
+                    <li class="header__nav-item underline-hover">
+                        <a href="#guide-books" class="header__nav-link">Try a Free Guide</a>
+                    </li>
+                    <li class="header__nav-item underline-hover">
+                        <a href="#interviews" class="header__nav-link">Stories</a>
+                    </li>
                 </ul>
             </nav>
 
-            <div class="header-title-block">
-                <h1 class="header__title"><a href=".">
-                        <span></span>thalby
-                    </a></h1>
+            <div class="header-title-block title-block">
+                <h1 class="header__title title-block__text">
+                    <a href="." class="title-block__link">
+                        <span class="title-block__dot title-block__dot--header"></span>thalby
+                    </a>
+                </h1>
             </div>
 
             <div class="header__actions">
                 <ul class="header__actions-list">
                     <li class="header__action-item">
-                        <a href="https://www.instagram.com/" target="_blank"><img src="./icons/instagram-icon.svg"
-                                alt="instagram icon"></a>
+                        <a href="https://www.instagram.com/" target="_blank">
+                            <img src="./icons/instagram-icon.svg" alt="instagram icon">
+                        </a>
                     </li>
                     <li class="header__action-item">
-                        <img src="./icons/search-icon.svg" alt="search icon">
+                        <button type="button">
+                            <img src="./icons/search-icon.svg" alt="search icon">
+                        </button>
                     </li>
-                    <li class="header__action-item header__action-item--quantity>
-                        <button class=" header__action-btn-cart" id="cart">
-                        <img src="./icons/cart-icon.svg" alt="cart-icon">
+                    <li class="header__action-item header__action-item--quantity">
+                        <button class="header__action-btn-cart" id="cart">
+                            <img src="./icons/cart-icon.svg" alt="cart-icon">
                         </button>
                         <span class="quantity"></span>
                     </li>
@@ -54,8 +61,11 @@
     </header>
 
     <aside class="cart-aside active">
-        <img src="./icons/close-cart-icon.svg" alt="close aside icon" class="cart__close-btn">
-        <div class="cart-aside__is-empty">
+        <button type="button" class="cart__close-btn">
+            <img src="./icons/close-cart-icon.svg" alt="close aside icon">
+        </button>
+
+        <div class="cart-aside__empty">
             <img src="./icons/empty-cart.svg" alt="empty cart icon">
             <p>Your cart is empty</p>
         </div>
@@ -242,8 +252,12 @@
         <div class="container">
             <div class="footer__top">
                 <div class="footer__brand">
-                    <div class="footer__title">
-                        <span></span>thalby
+                    <div class="footer-title-block title-block">
+                        <h2 class="footer__title title-block__text">
+                            <a href="." class="title-block__link">
+                                <span class="title-block__dot title-block__dot--footer"></span>thalby
+                            </a>
+                        </h2>
                     </div>
                     <div class="footer__socials">
                         <ul class="footer__socials-list">
