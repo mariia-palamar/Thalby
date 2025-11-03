@@ -5,6 +5,9 @@ import { guideBooks } from './data.js';
 let lastScroll = 0
 const defaultOffset = 200
 const header = document.querySelector('.header')
+const burger = document.getElementById('burger')
+const headerNav = document.querySelector('.header__nav')
+const headerActions = document.querySelector('.header__actions')
 
 const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop
 const isHide = () => header.classList.contains('hide')
@@ -12,12 +15,23 @@ const isHide = () => header.classList.contains('hide')
 window.addEventListener('scroll', () => {
     if (scrollPosition() > lastScroll && !isHide() && scrollPosition() > defaultOffset) {
         header.classList.add('hide')
-
+        burger.classList.add('hide')
+        headerNav.classList.add('hide')
+        headerActions.classList.add('hide')
     } else if (scrollPosition() < lastScroll && isHide()) {
         header.classList.remove('hide')
+        burger.classList.remove('hide')
+        headerNav.classList.remove('hide')
+        headerActions.classList.remove('hide')
     }
 
     lastScroll = scrollPosition()
+})
+
+burger.addEventListener('click', () => {
+    burger.classList.toggle('active')
+    headerNav.classList.toggle('active')
+    headerActions.classList.toggle('active')
 })
 
 // best sellers render
@@ -57,6 +71,8 @@ const closeCart = document.querySelector('.cart__close-btn')
 
 window.addEventListener('load', () => {
     cartAside.classList.add('transition-ready')
+    headerNav.classList.add('transition-ready')
+    headerActions.classList.add('transition-ready')
 })
 
 cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
