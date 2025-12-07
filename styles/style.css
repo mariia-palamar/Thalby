@@ -860,6 +860,11 @@ img {
     transform: rotate(-45deg);
 }
 
+.header__burger .quantity {
+    position: absolute;
+    bottom: 3px;
+    left: 25px;
+}
 
 /* adaptive */
 

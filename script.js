@@ -6,6 +6,7 @@ let lastScroll = 0
 const defaultOffset = 200
 const header = document.querySelector('.header')
 const burger = document.getElementById('burger')
+const quantity = document.querySelector('.header__burger .quantity')
 const headerNav = document.querySelector('.header__nav')
 const headerActions = document.querySelector('.header__actions')
 
@@ -32,6 +33,7 @@ burger.addEventListener('click', () => {
     burger.classList.toggle('active')
     headerNav.classList.toggle('active')
     headerActions.classList.toggle('active')
+    quantity.classList.toggle('none')
 })
 
 // best sellers render
@@ -293,10 +295,10 @@ function isChecked(bottomBtn, checkbox) {
 }
 
 function itemQuantity() {
-    const quantityContainer = document.querySelector('.quantity')
+    const quantityContainer = document.querySelectorAll('.quantity')
     let total = 0
     cart.forEach(item => total += item.quantity)
-    total === 0 ? quantityContainer.textContent = '' : quantityContainer.textContent = parseInt(total)
+    quantityContainer.forEach(item => total === 0 ? item.textContent = '' : item.textContent = parseInt(total))
 }
 
 function saveToLocalStorage(cart) {
