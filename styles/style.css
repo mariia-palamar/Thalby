@@ -739,6 +739,11 @@ img {
     text-align: center;
 }
 
+.cart-aside__empty.none,
+.cart-aside__order-accepted.none {
+    display: none !important;
+}
+
 .cart-aside__empty p,
 .cart-aside__order-accepted p {
     font-size: 23px;

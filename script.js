@@ -78,8 +78,9 @@ window.addEventListener('load', () => {
 cartBtn.addEventListener('click', () => cartAside.classList.toggle('active'))
 closeCart.addEventListener('click', () => cartAside.classList.remove('active'))
 
-let cart = new Map()
-loadFromLocalStorage()
+const cart = new Map()
+document.addEventListener('DOMContentLoaded', () => loadFromLocalStorage())
+// loadFromLocalStorage()
 
 function addToCart(book) {
     const id = String(book.id)
@@ -104,12 +105,15 @@ function renderCart() {
 
     cart.forEach(item => {
         createCartItem(item, cartList)
-        isCartEmpty()
     })
 
     const oldCartBottom = document.querySelector('.cart__bottom')
     if (oldCartBottom) { oldCartBottom.remove() }
     renderCartBottom(cartList, orderAccepted)
+
+    updatedTotal()
+    itemQuantity()
+    isCartEmpty()
 }
 
 function createCartItem(item, cartList) {
@@ -118,6 +122,7 @@ function createCartItem(item, cartList) {
     const cartItemTop = document.createElement('div')
     const cartItemTitle = document.createElement('h5')
     const cartItemDeleteBtn = document.createElement('button')
+    const deleteIcon = document.createElement('img')
     const cartItemBottom = document.createElement('div')
     const cartItemQuantity = document.createElement('div')
     const quantityBtnDecrease = document.createElement('button')
@@ -131,8 +136,9 @@ function createCartItem(item, cartList) {
     cartItemImg.src = item.image
     cartItemImg.alt = item.title
     cartItemTitle.textContent = item.title
-    cartItemDeleteBtn.src = './icons/delete-item-icon.svg'
-    cartItemDeleteBtn.alt = 'Delete icon'
+    cartItemDeleteBtn.type = 'button'
+    deleteIcon.src = './icons/delete-item-icon.svg'
+    deleteIcon.alt = 'Delete item'
     quantityBtnDecrease.type = 'button'
     quantityBtnDecreaseIcon.src = item.quantity <= 1 ? './icons/decrease-icon-unactive.svg' : './icons/decrease-icon.svg'
     quantityBtnDecreaseIcon.alt = 'Decrease icon'
@@ -156,12 +162,14 @@ function createCartItem(item, cartList) {
     cartItemPrice.classList.add('cart__item-price')
 
     cartItemTop.append(cartItemTitle, cartItemDeleteBtn)
+    cartItemDeleteBtn.appendChild(deleteIcon)
     quantityBtnDecrease.appendChild(quantityBtnDecreaseIcon)
     quantityBtnIncrease.appendChild(quantityBtnIncreaseIcon)
     cartItemQuantity.append(quantityBtnDecrease, quantityInput, quantityBtnIncrease)
     cartItemBottom.append(cartItemQuantity, cartItemPrice)
     cartListItem.append(cartItemImg, cartItemTop, cartItemBottom)
     cartList.appendChild(cartListItem)
+    console.log(cartList);
 
     quantityBtnDecrease.addEventListener('click', () => decreaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
     quantityBtnIncrease.addEventListener('click', () => increaseQuantity(item, quantityInput, cartItemPrice, quantityBtnDecreaseIcon))
@@ -250,15 +258,21 @@ function renderCartBottom(cartList, orderAccepted) {
 }
 
 function isCartEmpty() {
+    const emptyCart = document.querySelector('.cart-aside__empty')
+    const orderAccepted = document.querySelector('.cart-aside__order-accepted')
+    const cartBottom = document.querySelector('.cart__bottom')
+    const cartList = document.querySelector('.cart__list')
+
     if (cart.size === 0) {
-        const emptyCart = document.querySelector('.cart-aside__empty')
         emptyCart.classList.remove('none')
-        document.querySelector('.cart__bottom').classList.add('none')
+        if (cartBottom) cartBottom.classList.add('none')
+        if (cartList) cartList.innerHTML = ''
         updatedTotal()
         clearLocalStorage()
     } else if (cart.size !== 0) {
-        const emptyCart = document.querySelector('.cart-aside__empty')
         emptyCart.classList.add('none')
+        orderAccepted.classList.add('none')
+        if (cartBottom) cartBottom.classList.remove('none')
     }
 }
 
@@ -271,6 +285,7 @@ function totalSum(cart) {
 function updatedTotal() {
     const totalElement = document.querySelector('.total-sum')
     if (totalElement) totalElement.textContent = `$${totalSum(cart).toFixed(2)}`
+    isCartEmpty()
 }
 
 function isChecked(bottomBtn, checkbox) {
