@@ -19,6 +19,9 @@ window.addEventListener('scroll', () => {
         burger.classList.add('hide')
         headerNav.classList.add('hide')
         headerActions.classList.add('hide')
+        burger.classList.remove('active')
+        headerNav.classList.remove('active')
+        headerActions.classList.remove('active')
     } else if (scrollPosition() < lastScroll && isHide()) {
         header.classList.remove('hide')
         burger.classList.remove('hide')
